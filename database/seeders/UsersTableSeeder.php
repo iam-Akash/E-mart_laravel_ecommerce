@@ -1,0 +1,50 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('users')->insert([
+            //admin
+            [
+            'full_name'=>'ziaul Haq',
+            'username'=>'Admin',
+            'email'=>'admin@gmail.com',
+            'password'=> Hash::make('123456'),
+            'role'=>'admin',
+            'status'=>'active',
+            ],
+            //vendor
+            [
+                'full_name'=>'Sadia Uddin',
+                'username'=>'Vendor',
+                'email'=>'vendor@gmail.com',
+                'password'=> Hash::make('123456'),
+                'role'=>'vendor',
+                'status'=>'active',
+                ],
+                //admin
+            [
+                'full_name'=>'shorif uddin',
+                'username'=>'Customer',
+                'email'=>'customer@gmail.com',
+                'password'=> Hash::make('123456'),
+                'role'=>'customer',
+                'status'=>'active',
+                ],
+            
+        ]);
+    }
+}
