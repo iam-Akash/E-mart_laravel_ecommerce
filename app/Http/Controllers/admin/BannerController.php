@@ -165,8 +165,6 @@ class BannerController extends Controller
             DB::table('banners')->where('id', $request->id)->update(['status'=> 'inactive']);
             return response()->json(['msg'=>'Banner inactivated successfully','status'=>'Inctivated', 'process'=>true]);
         }
-       
-       
     }
 
     public function bannerDelete(Request $request){
