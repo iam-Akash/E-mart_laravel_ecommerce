@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Banner;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,9 @@ class BannerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-         $banners=Banner::all();
+    {   
+       
+        $banners=Banner::all();
         return view('backend.banner.index', ['banners'=>$banners]);
     }
 
@@ -171,7 +173,8 @@ class BannerController extends Controller
         $banner=Banner::find($request->id);
         if($banner){
           $banner->delete();
-          return response()->json(['msg'=>'Successfully deleted', 'process'=>true]);
+          $banner_count= Banner::all()->count();
+          return response()->json(['msg'=>'Successfully deleted','banner_count'=> $banner_count, 'process'=>true]);
         }
         else{
             return response()->json(['error'=>'Something went wrong', 'process'=>false]);

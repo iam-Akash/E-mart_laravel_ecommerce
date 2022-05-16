@@ -25,7 +25,8 @@
     </div>
     <div class="col-md-6 py-2">
         <a href="{{route('banner.create')}}" class="btn btn-info mb-3" style="padding: 5px 20px; margin-bottom:0px!important"> <i class="fa fa-plus-circle mr-2"></i> Add banner </a>
-        <span class="badge badge-success" style="padding: 10px 20px;">Total Banner : {{$banners->count()}}</span>
+        <span id="banner_count" class="badge badge-success" style="padding: 10px 20px;">Total banner: {{$banners->count()}}</span>
+       
     </div>
     <div class="col-lg-12">
         <div class="card">
@@ -102,6 +103,7 @@
             },
             success:function(response){
                if(response.process){
+                
                 Swal.fire(
                     response.status,
                     response.msg,
@@ -121,7 +123,7 @@
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-});
+    });
    
     $('.delete_btn').click(function (e) { 
         e.preventDefault();
@@ -146,6 +148,7 @@
             success:function(response){
                if(response.process){
                     $('#row'+dataID).remove();
+                    $('#banner_count').html('Total banner: '+response.banner_count);
                    Swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -163,4 +166,5 @@
         });
     });
 </script>
+
 @endpush

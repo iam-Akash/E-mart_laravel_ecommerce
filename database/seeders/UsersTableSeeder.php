@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
                 'role'=>'vendor',
                 'status'=>'active',
                 ],
-                //admin
+                //Customer
             [
                 'full_name'=>'shorif uddin',
                 'username'=>'Customer',
