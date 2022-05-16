@@ -14,6 +14,7 @@
                 <li class="breadcrumb-item">Banner</li>
                 <li class="breadcrumb-item active">All banner</li>
             </ul>
+           
         </div>
 
     </div>
@@ -22,8 +23,9 @@
     <div class="col-md-12">
         @include('backend.layouts.notification')
     </div>
-    <div class="col-md-6">
-        <a href="{{route('banner.create')}}" class="btn btn-info mb-3" style="padding: 5px 20px">Add banner </a>
+    <div class="col-md-6 py-2">
+        <a href="{{route('banner.create')}}" class="btn btn-info mb-3" style="padding: 5px 20px; margin-bottom:0px!important"> <i class="fa fa-plus-circle mr-2"></i> Add banner </a>
+        <span class="badge badge-success" style="padding: 10px 20px;">Total Banner : {{$banners->count()}}</span>
     </div>
     <div class="col-lg-12">
         <div class="card">
@@ -35,7 +37,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
-                                <th>Slug</th>
+                                {{-- <th>Slug</th> --}}
                                 <th>Description</th>
                                 <th>photo</th>
                                 <th>Status</th>
@@ -47,19 +49,30 @@
                        
                         <tbody>
                           @foreach ($banners as $key=>$banner)
-                              <tr>
+                              <tr id="row{{$banner->id}}">
                                   <td>{{$key+1}}</td>
                                   <td>{{$banner->title}}</td>
-                                  <td>{{$banner->slug}}</td>
-                                  <td>{{Str::limit($banner->description, 20, $end='...')}}</td>
+                                  {{-- <td>{{$banner->slug}}</td> --}}
+                                  <td>{!!Str::limit($banner->description, 20, $end='...')!!}</td>
                                   <td><img src="{{$banner->photo}}" width="120px" height="auto" alt=""></td>
-                                  <td>{{$banner->status}}</td>
-                                  <td>{{$banner->condition}}</td>
+                                  <td>
+                                      
+                                    <input type="checkbox" name="toogle" value="{{$banner->id}}" {{$banner->status=='active'? 'checked' : ''}} data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
+                                      
+                                  </td>
+                                  <td>
+                                      @if ($banner->condition=='banner')
+                                        <span class="badge badge-success">{{$banner->condition}}</span>
+                                          @else
+                                          <span class="badge badge-primary">{{$banner->condition}}</span>
+                                      @endif
+                                      
+                                    </td>
                                   <td>{{$banner->created_at->toFormattedDateString()}}</td>
                                   <td>
-                                      <a  href="javascript:void();">Edit</a>
-                                      <br>
-                                      <a   href="javascript:void();">Delete</a>
+                                      <a  href="{{route('banner.edit', $banner->id)}}" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-outline-warning" data-placement="bottom"><i class="fa fa-edit"></i></a>
+                                      <a  href="javascript:void(0);" data-id="{{$banner->id}}"  data-toggle="tooltip" title="Delete" class="delete_btn btn btn-sm btn-outline-danger" data-placement="bottom"><i class="fa fa-trash"></i></a>
+                                    
                                   </td>
 
                               </tr>
@@ -74,5 +87,80 @@
 </div>
 @endsection
 @push('js')
-
+<script>
+    $('input[name=toogle').change(function(){
+        var mode=$(this).prop('checked');
+        var id=$(this).val();
+       
+        $.ajax({
+            url:"{{route('banner.status')}}",
+            type:"POST",
+            data:{
+               _token:'{{csrf_token()}}',
+                mode:mode,
+                id:id,
+            },
+            success:function(response){
+               if(response.process){
+                Swal.fire(
+                    response.status,
+                    response.msg,
+                    'success'
+                    )
+                //    setTimeout(function() { alert(response.msg); }, 1000);
+               }
+               else{
+                   alert('Please try again');
+               }
+            }
+        });
+    })
+</script>
+<script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+   
+    $('.delete_btn').click(function (e) { 
+        e.preventDefault();
+        var dataID=$(this).data('id'); 
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+           
+            $.ajax({
+            url:"{{route('banner.delete')}}",
+            type:"POST",
+            data:{
+                id:dataID,
+            },
+            success:function(response){
+               if(response.process){
+                    $('#row'+dataID).remove();
+                   Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                    )
+               }
+               else{
+                alert(response.error);
+               }
+               
+            }
+        });
+           
+        }
+        });
+    });
+</script>
 @endpush

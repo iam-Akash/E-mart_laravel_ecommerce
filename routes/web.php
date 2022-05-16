@@ -28,4 +28,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin');
     Route::resource('banner', BannerController::class);
+    Route::post('banner_status', [BannerController::class, 'bannerStatus'])->name('banner.status');
+    Route::post('banner_delete', [BannerController::class, 'bannerDelete'])->name('banner.delete');
 });

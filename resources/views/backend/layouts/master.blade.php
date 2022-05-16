@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="description" content="Lucid Bootstrap 4.1.1 Admin Template">
     <meta name="author" content="WrapTheme, design by: ThemeMakker.com">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="{{asset('assets/backend/vendor/bootstrap/css/bootstrap.min.css')}}">
@@ -25,6 +26,8 @@
     <link rel="stylesheet" href="{{asset('assets/backend/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('assets/backend/css/color_skins.css')}}">
     <link rel="stylesheet" href="{{asset('assets/backend/vendor/summernote/summernote.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/backend/vendor/bootstrap4-toggle/css/bootstrap4-toggle.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/backend/vendor/sweetalert2/sweetalert2.css')}}">
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
     </script>  --}}
     @stack('css')
@@ -67,6 +70,8 @@
 <script src="{{asset('assets/backend/bundles/mainscripts.bundle.js')}}"></script>
 <script src="{{asset('assets/backend/js/jquery-datatable.js')}}"></script>
 <script src="{{asset('assets/backend/vendor/summernote/summernote.js')}}"></script>
+<script src="{{asset('assets/backend/vendor/bootstrap4-toggle/js/bootstrap4-toggle.js')}}"></script>
+<script src="{{asset('assets/backend/vendor/sweetalert2/sweetalert2.js')}}"></script>
 <script>
     setTimeout(function(){
         $('#alert').slideUp();

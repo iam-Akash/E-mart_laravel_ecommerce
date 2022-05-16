@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Banner;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class BannerController extends Controller
@@ -93,7 +94,15 @@ class BannerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $banner= Banner::find($id);
+        if($banner){
+            return view('backend.banner.edit', ['banner'=>$banner]);
+        }
+        else{
+            return redirect()->back();
+        }
+       
+
     }
 
     /**
@@ -105,7 +114,37 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'title'=>'required',
+            'description'=>'nullable',
+            'photo'=>'required',
+            'status'=>'nullable|in:active,inactive',
+            'condition'=>'nullable|in:banner,promote',
+        ]);
+        
+        $slug=Str::slug($request->input('title'));
+        $slug_count=Banner::where('slug',$slug)->count();
+        if($slug_count>0){
+            $slug=time().'-'.$slug;
+        }
+
+        $banner=Banner::find($id);
+        if($banner){
+            $banner->title=$request->title;
+            $banner->slug=$slug;
+            $banner->description=$request->description;
+            $banner->status=$request->status;
+            $banner->condition=$request->condition;
+            $banner->photo=$request->photo;
+            $banner->save();
+
+        return redirect()->route('banner.index')->with('success', 'Banner successfully updated');
+        }
+        else{
+            return redirect()->route('banner.index')->with('error', 'Something went wrong');
+        }
+        
     }
 
     /**
@@ -114,8 +153,28 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+   
+    public function bannerStatus(Request $request){
+        if($request->mode=='true'){
+           DB::table('banners')->where('id', $request->id)->update(['status'=> 'active']);
+           return response()->json(['msg'=>'Banner activated successfully', 'status'=>'Activated' ,'process'=>true]);
+        }
+        else{
+            DB::table('banners')->where('id', $request->id)->update(['status'=> 'inactive']);
+            return response()->json(['msg'=>'Banner inactivated successfully','status'=>'Inctivated', 'process'=>true]);
+        }
+       
+       
+    }
+
+    public function bannerDelete(Request $request){
+        $banner=Banner::find($request->id);
+        if($banner){
+          $banner->delete();
+          return response()->json(['msg'=>'Successfully deleted', 'process'=>true]);
+        }
+        else{
+            return response()->json(['error'=>'Something went wrong', 'process'=>false]);
+        }
     }
 }
