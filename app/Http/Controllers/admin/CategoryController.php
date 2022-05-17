@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -13,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories=Category::all();
+        return view('backend.category.index', ['categories'=>$categories]);
     }
 
     /**
@@ -22,8 +25,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+
+    {   $parent_categories=Category::where('is_parent', 1)->orderBy('title', 'ASC')->get();
+        return view('backend.category.create', ['parent_categories'=>$parent_categories]);
     }
 
     /**
@@ -34,7 +38,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request->all();
+        $this->validate($request, [
+            'title'=>'string|required',
+            'summary'=>'string|nullable',
+            'is_parent'=>'sometimes|in:1',
+            'parent_id'=>'nullable',
+            'status'=>'nullable|in:active,inactive,'
+        ]);
+        
     }
 
     /**

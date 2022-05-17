@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\admin\CategoryController;
 
 
 
@@ -30,4 +31,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::resource('banner', BannerController::class);
     Route::post('banner_status', [BannerController::class, 'bannerStatus'])->name('banner.status');
     Route::post('banner_delete', [BannerController::class, 'bannerDelete'])->name('banner.delete');
+    Route::resource('category', CategoryController::class );
+    Route::post('category_status', [categoryController::class, 'categoryStatus'])->name('category.status');
+    Route::post('category_delete', [categoryController::class, 'categoryDelete'])->name('category.delete');
 });

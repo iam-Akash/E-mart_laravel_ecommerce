@@ -1,14 +1,13 @@
 @extends('backend.layouts.master')
-@section('title', 'Add-banner')
+@section('title', 'Add-category')
 @push('css')
 <style>
-    .status,
-    .condition {
+     .status,
+    .parent_id {
         width: 100%;
         padding-top: 5px;
         padding-bottom: 5px;
     }
-
     .dropdown-toggle::after{
         display: none;
     }
@@ -21,11 +20,11 @@
     <div class="row">
         <div class="col-lg-5 col-md-8 col-sm-12">
             <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
-                        class="fa fa-arrow-left"></i></a>Add banner</h2>
+                        class="fa fa-arrow-left"></i></a>Add category</h2>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('admin')}}"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item">Banner</li>
-                <li class="breadcrumb-item active">Create banner</li>
+                <li class="breadcrumb-item">Category</li>
+                <li class="breadcrumb-item active">Create category</li>
             </ul>
         </div>
 
@@ -45,24 +44,46 @@
     <div class="col-md-12">
         <div class="card">
             <div class="body">
-                <form id="basic-form" method="post" action="{{route('banner.store')}}">
+                <form id="basic-form" method="post" action="{{route('category.store')}}">
                     @csrf
                     <div class="form-group">
                         <label>Title<span class="text-danger">*</span></label>
                         <input type="text" name='title' value="{{old('title')}}" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="description" placeholder="Write some text..." class="form-control"  name="description" rows="15"
-                            cols="30">{{old('description')}}</textarea>
+                        <label>Summary</label>
+                        <textarea id="summary" placeholder="Write some text..." class="form-control"  name="summary" rows="15"
+                            cols="30">{{old('summary')}}</textarea>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="is_parent">Is parent?</label>
+                                <br>
+                                <input type="checkbox" value="1"  checked name="is_parent" id="is_parent">
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-none" id="parent_cat_div">
+                            <div class="form-group">
+                                <label for="parent_id">Parent category title</label>
+                                <br>
+                                <select id="parent_id" class="parent_id" name="parent_id">
+                                    <option value="" selected>--Select--</option>
+                                    @foreach ($parent_categories as $item)
+                                    <option value="{{$item->id}}" {{old('parent_id')== $item->id? 'selected': ''}}>{{$item->title}}</option>
+                                    @endforeach
+                                    
+                                </select>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="status">Banner status</label>
+                                <label for="status">Category status</label>
                                 <br>
                                 <select id="status" class="status" name="status">
-                                    <option value="" selected>--select--</option>
                                     <option value="active" {{old('status')=='active'? 'selected' : ''}}>Active</option>
                                     <option value="inactive" {{old('status')=='inactive'? 'selected' : ''}}>Inactive
                                     </option>
@@ -70,25 +91,10 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="condition">Banner condition</label>
-                                <br>
-                                <select id="condition" class="condition" name="condition">
-                                    <option value="" selected>--select--</option>
-                                    <option value="banner" {{old('condition')=='banner'? 'selected' : ''}}>Banner
-                                    </option>
-                                    <option value="promote" {{old('condition')=='promote'? 'selected' : ''}}>Promote
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <label for="status">Upload banner image<span class="text-danger">*</span></label>
+                            <label for="status">Upload category image<span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
@@ -118,7 +124,7 @@
 </Script>
 <script>
     $(document).ready(function () {
-        $('#description').summernote({
+        $('#summary').summernote({
             toolbar: [
                         ['style', ['style']],
                         ['font', ['bold', 'underline', 'clear']],
@@ -135,6 +141,24 @@
         });
     });
 
+</script>
+
+<script>
+    $('#is_parent').change(function (e) { 
+        e.preventDefault();
+        
+        var is_checked= $(this).prop('checked');
+        if(is_checked){
+        
+            $('#parent_cat_div').addClass('d-none');
+            $('#parent_id').val('');
+        }
+        else{
+            
+            $('#parent_cat_div').removeClass('d-none');
+        }
+        
+    });
 </script>
 
 @endpush

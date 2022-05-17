@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->uniqid();
+            $table->string('slug')->unique();
             $table->mediumText('summary')->nullable();
             $table->string('photo')->nullable();
             $table->enum('status', ['active','inactive'])->default('active');
             $table->boolean('is_parent')->default(true);
-            $table->bigInteger('parent_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('SET NULL');  
             $table->timestamps();
         });

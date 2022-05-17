@@ -61,8 +61,8 @@
                         <li class="{{Request::is('admin/category*')? 'active' : ''}}">
                             <a href="javascript:void(0);" class="has-arrow"><i class=" fa-sitemap" aria-hidden="true"></i> <span>Category</span></a>
                             <ul>
-                                <li><a href="javascript:void(0);">Add Category</a></li>
-                                <li><a href="javascript:void(0);">Edit Category</a></li>
+                                <li><a href="{{route('category.index')}}">All Categories</a></li>
+                                <li><a href="{{route('category.create')}}">Add Category</a></li>
                             </ul>
                         </li>
 

@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title', 'All banners')
+@section('title', 'All categories')
 @push('css')
 
 @endpush
@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col-lg-5 col-md-8 col-sm-12">
             <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
-                        class="fa fa-arrow-left"></i></a>All banner</h2>
+                        class="fa fa-arrow-left"></i></a>All categories</h2>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('admin')}}"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item">Banner</li>
-                <li class="breadcrumb-item active">All banner</li>
+                <li class="breadcrumb-item">categories</li>
+                
             </ul>
            
         </div>
@@ -24,8 +24,8 @@
         @include('backend.layouts.notification')
     </div>
     <div class="col-md-6 py-2">
-        <a href="{{route('banner.create')}}" class="btn btn-info mb-3" style="padding: 5px 20px; margin-bottom:0px!important"> <i class="fa fa-plus-circle mr-2"></i> Add banner </a>
-        <span id="banner_count" class="badge badge-success" style="padding: 10px 20px;">Total banner: {{$banners->count()}}</span>
+        <a href="{{route('category.create')}}" class="btn btn-info mb-3" style="padding: 5px 20px; margin-bottom:0px!important"> <i class="fa fa-plus-circle mr-2"></i> Add category </a>
+        <span id="category_count" class="badge badge-success" style="padding: 10px 20px;">Total categories: {{$categories->count()}}</span>
        
     </div>
     <div class="col-lg-12">
@@ -38,40 +38,40 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
-                                {{-- <th>Slug</th> --}}
-                                <th>Description</th>
+                                {{-- <th>Summary</th> --}}
                                 <th>photo</th>
+                                <th>Is_parent</th>
+                                <th>Parent</th>
                                 <th>Status</th>
-                                <th>Condition</th>
-                                <th>Created at</th>
+                                {{-- <th>Created at</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
                        
                         <tbody>
-                          @foreach ($banners as $key=>$item)
+                          @foreach ($categories as $key=>$item)
                               <tr id="row{{$item->id}}">
                                   <td>{{$key+1}}</td>
                                   <td>{{$item->title}}</td>
-                                  {{-- <td>{{$item->slug}}</td> --}}
-                                  <td>{!!Str::limit($item->description, 20, $end='...')!!}</td>
+                                  {{-- <td>{!!Str::limit($item->summary, 20, $end='...')!!}</td> --}}
                                   <td><img src="{{$item->photo}}" width="120px" height="auto" alt=""></td>
+                                  @if ($item->is_parent === 1)
+                                        <td>Yes</td>
+                                        <td>Itself</td>
+                                      @else
+                                        <td>No</td>
+                                        <td>{{\App\Models\Category::find($item->parent_id)->title}}</td>
+                                  @endif
+                                 
                                   <td>
                                       
                                     <input type="checkbox" name="toogle" value="{{$item->id}}" {{$item->status=='active'? 'checked' : ''}} data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
                                       
                                   </td>
+                                
+                                  {{-- <td>{{$item->created_at->toFormattedDateString()}}</td> --}}
                                   <td>
-                                      @if ($item->condition=='banner')
-                                        <span class="badge badge-success">{{$item->condition}}</span>
-                                          @else
-                                          <span class="badge badge-primary">{{$item->condition}}</span>
-                                      @endif
-                                      
-                                    </td>
-                                  <td>{{$item->created_at->toFormattedDateString()}}</td>
-                                  <td>
-                                      <a  href="{{route('banner.edit', $item->id)}}" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-outline-warning" data-placement="bottom"><i class="fa fa-edit"></i></a>
+                                      <a  href="{{route('category.edit', $item->id)}}" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-outline-warning" data-placement="bottom"><i class="fa fa-edit"></i></a>
                                       <a  href="javascript:void(0);" data-id="{{$item->id}}"  data-toggle="tooltip" title="Delete" class="delete_btn btn btn-sm btn-outline-danger" data-placement="bottom"><i class="fa fa-trash"></i></a>
                                     
                                   </td>
@@ -94,7 +94,7 @@
         var id=$(this).val();
        
         $.ajax({
-            url:"{{route('banner.status')}}",
+            url:"{{route('category.status')}}",
             type:"POST",
             data:{
                _token:'{{csrf_token()}}',
@@ -140,7 +140,7 @@
         if (result.isConfirmed) {
            
             $.ajax({
-            url:"{{route('banner.delete')}}",
+            url:"{{route('category.delete')}}",
             type:"POST",
             data:{
                 id:dataID,
@@ -148,7 +148,7 @@
             success:function(response){
                if(response.process){
                     $('#row'+dataID).remove();
-                    $('#banner_count').html('Total banner: '+response.banner_count);
+                    $('#category_count').html('Total categories: '+response.category_count);
                    Swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
