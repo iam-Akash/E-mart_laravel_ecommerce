@@ -59,10 +59,17 @@
                         </li>
 
                         <li class="{{Request::is('admin/category*')? 'active' : ''}}">
-                            <a href="javascript:void(0);" class="has-arrow"><i class=" fa-sitemap" aria-hidden="true"></i> <span>Category</span></a>
+                            <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-sitemap" aria-hidden="true"></i> <span>Category</span></a>
                             <ul>
                                 <li><a href="{{route('category.index')}}">All Categories</a></li>
                                 <li><a href="{{route('category.create')}}">Add Category</a></li>
+                            </ul>
+                        </li>
+                        <li class="{{Request::is('admin/brand*')? 'active' : ''}}">
+                            <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <span>Brand</span></a>
+                            <ul>
+                                <li><a href="{{route('brand.index')}}">All Brands</a></li>
+                                <li><a href="{{route('brand.create')}}">Add Brand</a></li>
                             </ul>
                         </li>
 
