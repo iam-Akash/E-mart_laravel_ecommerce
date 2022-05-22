@@ -28,9 +28,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin');
+    
+    //Banner
     Route::resource('banner', BannerController::class);
     Route::post('banner_status', [BannerController::class, 'bannerStatus'])->name('banner.status');
     Route::post('banner_delete', [BannerController::class, 'bannerDelete'])->name('banner.delete');
+
+    //Category
     Route::resource('category', CategoryController::class );
     Route::post('category_status', [categoryController::class, 'categoryStatus'])->name('category.status');
     Route::post('category_delete', [categoryController::class, 'categoryDelete'])->name('category.delete');

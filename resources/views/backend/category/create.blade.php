@@ -31,7 +31,9 @@
     </div>
 </div>
 <div class="row clearfix">
+
     <div class="col-md-12">
+        @include('backend.layouts.notification')
         @if ($errors->any())
             <ul>
                 @foreach ($errors->all() as $error)

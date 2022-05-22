@@ -109,7 +109,6 @@
                     response.msg,
                     'success'
                     )
-                //    setTimeout(function() { alert(response.msg); }, 1000);
                }
                else{
                    alert('Please try again');
