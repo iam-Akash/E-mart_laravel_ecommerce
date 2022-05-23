@@ -76,8 +76,8 @@
                         <li class="{{Request::is('admin/product*')? 'active' : ''}}">
                             <a href="javascript:void(0);" class="has-arrow"><i class="icon-briefcase"></i> <span>Product</span></a>
                             <ul>
-                                <li><a href="javascript:void(0);">Add Product</a></li>
-                                <li><a href="javascript:void(0);">Edit Product</a></li>
+                                <li><a href="{{route('product.index')}}">All Products</a></li>
+                                <li><a href="{{route('product.create')}}">Add Product</a></li>
                             </ul>
                         </li>
 
@@ -88,7 +88,7 @@
                                 <li><a href="javascript:void(0);">Edit Cart</a></li>
                             </ul>
                         </li>
-                        
+
                         <li class="{{Request::is('admin/post-category*')? 'active' : ''}}">
                             <a href="javascript:void(0);" class="has-arrow"><i class=" icon-list"></i> <span>Post Category</span></a>
                             <ul>

@@ -1,9 +1,11 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\CategoryController;
 
 
@@ -44,5 +46,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::resource('brand', BrandController::class);
     Route::post('brand_status', [brandController::class, 'brandStatus'])->name('brand.status');
     Route::post('brand_delete', [brandController::class, 'brandDelete'])->name('brand.delete');
+
+    //Product
+    Route::resource('product' , ProductController::class);
+    Route::post('product_status', [productController::class, 'productStatus'])->name('product.status');
+    Route::post('product_delete', [productController::class, 'productDelete'])->name('product.delete');
+    Route::get('product/getChildCategory/{id}/child', [ProductController::class, 'getChildCategory'])->name('product.getChildCategory');
 
 });
