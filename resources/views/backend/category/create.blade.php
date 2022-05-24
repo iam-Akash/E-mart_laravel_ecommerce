@@ -40,7 +40,7 @@
                     <li class="text-danger">{{$error}}</li>
                 @endforeach
             </ul>
-            
+
         @endif
     </div>
     <div class="col-md-12">
@@ -74,7 +74,7 @@
                                     @foreach ($parent_categories as $item)
                                     <option value="{{$item->id}}" {{old('parent_id')== $item->id? 'selected': ''}}>{{$item->title}}</option>
                                     @endforeach
-                                    
+
                                 </select>
 
                             </div>
@@ -110,6 +110,7 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{route('category.index')}}" class="btn btn-danger">Cancel</a>
                 </form>
             </div>
         </div>
@@ -146,20 +147,20 @@
 </script>
 
 <script>
-    $('#is_parent').change(function (e) { 
+    $('#is_parent').change(function (e) {
         e.preventDefault();
-        
+
         var is_checked= $(this).prop('checked');
         if(is_checked){
-        
+
             $('#parent_cat_div').addClass('d-none');
             $('#parent_id').val('');
         }
         else{
-            
+
             $('#parent_cat_div').removeClass('d-none');
         }
-        
+
     });
 </script>
 

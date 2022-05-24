@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,44 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+
+        $this->validate($request,[
+            "title"=> "required|min:2|max:100",
+            "summary"=> "required",
+            "description"=> "nullable",
+            "price"=> "numeric|required",
+            "discount"=> "nullable",
+            "stock"=> "required",
+            "size"=> "nullable",
+            "brand_id"=> "nullable|exists:brands,id",
+            "parent_category_id"=> "required|exists:categories,id",
+            "child_category_id"=> "nullable|exists:categories,id",
+            "status"=> "required|in:active,inactive",
+            "condition"=> "required|in:new,sale,popular,winter",
+            "photo"=> "required",
+            "vendor_id"=>'nullable|exists:users,id'
+        ]);
+        $data=$request->all();
+
+        $slug=Str::slug($request->input('title'));
+        $slug_count=Product::where('slug', $slug)->count();
+        if($slug_count > 0) {
+            $slug=time() . '-'. $slug;
+        }
+        $data['slug']=$slug;
+        // $data['summary']= strip_tags($request->input['summary']);
+
+        $offer_price=$request->price - ($request->price*$request->discount)/100;
+        $data["offer_price"]= $offer_price;
+
+        $status= Product::create($data);
+        if($status){
+            return redirect()->route('product.index')->with('success', 'Product created successfully');
+        }
+        else{
+            return redirect()->back()->with('error', 'Something went wrong');
+        }
+
     }
 
     /**
@@ -50,7 +88,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+
+
     }
 
     /**
@@ -61,7 +100,14 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product=Product::find($id);
+        if($product){
+            return view('backend.product.edit', ['product'=> $product]);
+        }
+        else{
+            return back()->with('error' , 'product not found');
+        }
+
     }
 
     /**

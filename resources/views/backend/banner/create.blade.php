@@ -39,7 +39,7 @@
                     <li class="text-danger">{{$error}}</li>
                 @endforeach
             </ul>
-            
+
         @endif
     </div>
     <div class="col-md-12">
@@ -102,6 +102,7 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{route('banner.index')}}" class="btn btn-danger">Cancel</a>
                 </form>
             </div>
         </div>

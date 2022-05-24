@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('photo');
             $table->enum('condition', ['new', 'sale', 'popular', 'winter'])->default('new');
             $table->enum('status', ['active', 'inactive']);
-            $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('parent_category_id');
             $table->unsignedBigInteger('child_category_id')->nullable();
             $table->unsignedBigInteger('vendor_id')->nullable();
