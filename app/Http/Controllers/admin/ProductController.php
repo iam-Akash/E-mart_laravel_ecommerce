@@ -119,7 +119,49 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+
+        $product=Product::find($id);
+        if($product){
+            $this->validate($request,[
+                "title"=> "required|min:2|max:100",
+                "summary"=> "required",
+                "description"=> "nullable",
+                "price"=> "numeric|required",
+                "discount"=> "nullable",
+                "stock"=> "required",
+                "size"=> "nullable",
+                "brand_id"=> "nullable|exists:brands,id",
+                "parent_category_id"=> "required|exists:categories,id",
+                "child_category_id"=> "nullable|exists:categories,id",
+                "status"=> "required|in:active,inactive",
+                "condition"=> "required|in:new,sale,popular,winter",
+                "photo"=> "required",
+                "vendor_id"=>'nullable|exists:users,id'
+            ]);
+            $data=$request->all();
+
+            $slug=Str::slug($request->input('title'));
+            $slug_count=Product::where('slug', $slug)->count();
+            if($slug_count > 0) {
+                $slug=time() . '-'. $slug;
+            }
+            $data['slug']=$slug;
+            $offer_price=$request->price - ($request->price*$request->discount)/100;
+            $data["offer_price"]= $offer_price;
+
+            $status= $product->fill($data)->save();
+            if($status){
+                return redirect()->route('product.index')->with('success', 'Product updated successfully');
+            }
+            else{
+                return redirect()->back()->with('error', 'Something went wrong');
+            }
+            }
+        else{
+            return redirect()->route('product.index')->with('error', 'Product not found');
+        }
     }
 
     /**
@@ -171,6 +213,15 @@ class ProductController extends Controller
         }
         else{
             return response()->json(['msg'=> 'Category not found' , 'process'=>false, 'data'=>'']);
+        }
+    }
+
+    public function updatedStatus(Request $request){
+        $product_status=Product::where('id',$request->id)->value('status');
+        if($product_status){
+            return response()->json(['msg'=>'Product found', 'process'=> true, 'data'=> $product_status]);
+        }else{
+            return response()->json(['msg'=>'product not found', 'process'=> false, 'data'=> '']);
         }
     }
 }

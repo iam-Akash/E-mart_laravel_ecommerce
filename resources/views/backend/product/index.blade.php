@@ -51,10 +51,15 @@
 
                         <tbody>
                           @foreach ($products as $key=>$item)
+                            @php
+                                $photo=explode(',', $item->photo);
+        //if there is multiple images of a product, explode will break them by comma and make an array inside $photo
+                            @endphp
+
                               <tr id="row{{$item->id}}">
                                   <td>{{$key+1}}</td>
                                   <td>{{Str::limit($item->title, 10,)}}</td>
-                                  <td><img src="{{$item->photo}}" width="100px" height="60px" alt=""></td>
+                                  <td><img src="{{$photo[0]}}" width="100px" height="60px" alt=""></td>
                                   <td>{{number_format($item->price,2)}} Tk</td>
                                   <td>{{$item->discount}}%</td>
                                   <td>{{number_format($item->offer_price,2)}} Tk</td>
@@ -81,8 +86,10 @@
                                       <a  href="javascript:void(0);" data-id="{{$item->id}}"  data-toggle="tooltip" title="Delete" class="delete_btn btn btn-sm btn-outline-danger" data-placement="bottom"><i class="fa fa-trash"></i></a>
 
                                   </td>
-                                   <!-- Modal -->
-                                <div class="modal fade" id="product_view{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                   <!-------------------------------------- Modal -------------------------------------->
+
+                                <div class="modal fade" id="product_view{{$item->id}}" data-id={{$item->id}}  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -119,7 +126,7 @@
                                             <div class="row my-3" >
                                                 <div class="col-md-6">
                                                     <strong>Price: </strong>
-                                                    <span>{{$product->price}}  </span>
+                                                    <span id="price">{{$product->price}}  </span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <strong>Discount: </strong>
@@ -136,14 +143,14 @@
 
                                                 <div class="col-md-6">
                                                     <strong>Size: </strong>
-                                                    <span class="badge badge-info"> {{$product->size}} </span>
+                                                    <span class="badge badge-pill badge-primary"> {{$product->size}} </span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <strong>Status: </strong>
                                                     @if ($product->status=='active')
-                                                        <span class="badge badge-success">{{$product->status}} </span>
+                                                        <span id="status{{$product->id}}" class="badge badge-success">{{$product->status}} </span>
                                                         @else
-                                                        <span class="badge badge-danger">{{$product->status}} </span>
+                                                        <span id="status{{$product->id}}" class="badge badge-danger">{{$product->status}} </span>
                                                     @endif
 
                                                 </div>
@@ -275,6 +282,36 @@
         }
         });
     });
+</script>
+<script>
+
+    $(".modal").on("shown.bs.modal", function(e){
+        var item_id= $(this).data('id');
+        var present_status= $('#status'+item_id).html();
+
+        $.ajax({
+            url:"{{route('product.updatedStatus')}}",
+            type:"POST",
+            data:{
+               _token:'{{csrf_token()}}',
+                id:item_id,
+            },
+            success:function(response){
+               if(response.process){
+                $('#status'+item_id).html(response.data);
+                if(present_status='active' && response.data=='inactive'){
+                    $('#status'+item_id).removeClass('badge-success');
+                    $('#status'+item_id).addClass('badge-danger');
+                }
+                if(present_status='inactive' && response.data=='active'){
+                    $('#status'+item_id).removeClass('badge-danger');
+                    $('#status'+item_id).addClass('badge-success');
+                }
+               }
+            }
+});
+});
+
 </script>
 
 @endpush
