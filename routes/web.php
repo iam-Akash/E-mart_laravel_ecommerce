@@ -2,11 +2,13 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\frontend\IndexController;
 
 
 
@@ -21,9 +23,7 @@ use App\Http\Controllers\admin\CategoryController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [IndexController::class, 'home'])->name('homepage');
 
 Auth::routes();
 
@@ -54,4 +54,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::post('product_delete', [productController::class, 'productDelete'])->name('product.delete');
     Route::get('product/getChildCategory/{id}/child', [ProductController::class, 'getChildCategory'])->name('product.getChildCategory');
 
+    //User
+    Route::resource('user' , UserController::class);
+    Route::post('user_status', [UserController::class, 'userStatus'])->name('user.status');
+    Route::post('user_delete', [UserController::class, 'userDelete'])->name('user.delete');
+    Route::post('user_updatedStatus', [UserController::class, 'updatedStatus'])->name('user.updatedStatus');
 });
