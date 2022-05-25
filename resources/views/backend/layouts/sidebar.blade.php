@@ -136,8 +136,8 @@
                         <li class="{{Request::is('admin/users*')? 'active' : ''}}">
                             <a href="javascript:void(0);" class="has-arrow"><i class="icon-users" aria-hidden="true"></i><span>Users</span></a>
                             <ul>
-                                <li><a href="javascript:void(0);">Add</a></li>
-                                <li><a href="javascript:void(0);">Edit</a></li>
+                                <li><a href="{{route('user.index')}}">All users</a></li>
+                                <li><a href="{{route('user.create')}}">Add user</a></li>
                             </ul>
                         </li>
                         <li class="{{Request::is('admin/comments*')? 'active' : ''}}">
