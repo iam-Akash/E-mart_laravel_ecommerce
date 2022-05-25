@@ -97,7 +97,7 @@
                                                 $product=\App\Models\Product::where('id', $item->id)->first();
                                             @endphp
 
-                                        <h5 class="modal-title" id="exampleModalLabel">{{$product->title}}</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">{{Str::upper($product->title)}}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -120,7 +120,7 @@
 
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <img src="{{$product->photo}}" width="150px"  height="150px" alt="">
+                                                    <img src="{{$photo[0]}}" width="150px"  height="150px" alt="">
                                                 </div>
                                             </div>
                                             <div class="row my-3" >
