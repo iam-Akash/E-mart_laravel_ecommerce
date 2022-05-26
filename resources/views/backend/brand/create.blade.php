@@ -40,7 +40,7 @@
                     <li class="text-danger">{{$error}}</li>
                 @endforeach
             </ul>
-            
+
         @endif
     </div>
     <div class="col-md-12">
@@ -52,7 +52,7 @@
                         <label>Title<span class="text-danger">*</span></label>
                         <input type="text" name='title' value="{{old('title')}}" class="form-control">
                     </div>
-                    
+
                     <div class="row clearfix">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <label for="status">Upload brand image</label>
+                            <label >Upload brand image</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">

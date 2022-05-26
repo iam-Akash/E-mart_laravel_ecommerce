@@ -186,7 +186,7 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <label for="status">Upload product image<span class="text-danger">*</span></label>
+                            <label >Upload product image<span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">

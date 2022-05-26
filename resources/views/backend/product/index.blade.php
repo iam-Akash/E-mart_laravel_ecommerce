@@ -126,7 +126,7 @@
                                             <div class="row my-3" >
                                                 <div class="col-md-6">
                                                     <strong>Price: </strong>
-                                                    <span id="price">{{$product->price}}  </span>
+                                                    <span id="price">{{$product->price}} </span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <strong>Discount: </strong>

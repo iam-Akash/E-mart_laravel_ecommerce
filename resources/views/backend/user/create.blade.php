@@ -1,14 +1,14 @@
 @extends('backend.layouts.master')
-@section('title', 'Add-banner')
+@section('title', 'Add-user')
 @push('css')
 <style>
-    .status,
-    .condition {
+     .status,
+    .parent_id,
+    .role {
         width: 100%;
         padding-top: 5px;
         padding-bottom: 5px;
     }
-
     .dropdown-toggle::after{
         display: none;
     }
@@ -21,18 +21,20 @@
     <div class="row">
         <div class="col-lg-5 col-md-8 col-sm-12">
             <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
-                        class="fa fa-arrow-left"></i></a>Add banner</h2>
+                        class="fa fa-arrow-left"></i></a>Add user</h2>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('admin')}}"><i class="icon-home"></i></a></li>
-                <li class="breadcrumb-item">Banner</li>
-                <li class="breadcrumb-item active">Create banner</li>
+                <li class="breadcrumb-item">User</li>
+                <li class="breadcrumb-item active">Create user</li>
             </ul>
         </div>
 
     </div>
 </div>
 <div class="row clearfix">
+
     <div class="col-md-12">
+        @include('backend.layouts.notification')
         @if ($errors->any())
             <ul>
                 @foreach ($errors->all() as $error)
@@ -45,24 +47,53 @@
     <div class="col-md-12">
         <div class="card">
             <div class="body">
-                <form id="basic-form" method="post" action="{{route('banner.store')}}">
+                <form id="basic-form" method="post" action="{{route('user.store')}}">
                     @csrf
                     <div class="form-group">
-                        <label>Title<span class="text-danger">*</span></label>
-                        <input type="text" name='title' value="{{old('title')}}" class="form-control">
+                        <label>Full name<span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Full name" name='full_name' value="{{old('full_name')}}" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="description" placeholder="Write some text..." class="form-control"  name="description" rows="15"
-                            cols="30">{{old('description')}}</textarea>
+                        <label>User name<span class="text-danger">*</span></label>
+                        <input type="text" placeholder="User name" name='username' value="{{old('username')}}" class="form-control">
                     </div>
+                    <div class="form-group">
+                        <label>Email<span class="text-danger">*</span></label>
+                        <input type="email" placeholder="Email" name='email' value="{{old('email')}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Password<span class="text-danger">*</span></label>
+                        <input type="password" placeholder="Minimum password 6 character" name='password' value="{{old('password')}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm password<span class="text-danger">*</span></label>
+                        <input type="password" placeholder="Re-type password" name='password_confirmation' value="{{old('password_confirmation')}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="number" placeholder="Phone" name='phone' value="{{old('phone')}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" placeholder="Address" name='address' value="{{old('address')}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Role<span class="text-danger">*</span></label>
+                        <br>
+                        <select class="role" name="role">
+                            <option value="" selected>--select--</option>
+                            <option value="admin" {{old('role')=='admin'? 'selected':''}}>Admin</option>
+                            <option value="vendor" {{old('role')=='vendor'? 'selected':''}}>Vendor</option>
+                            <option value="customer" {{old('role')=='customer'? 'selected':''}}>Customer</option>
+                        </select>
+                    </div>
+
                     <div class="row clearfix">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="status">Banner status</label>
+                                <label for="status">User status<span class="text-danger">*</span></label>
                                 <br>
                                 <select id="status" class="status" name="status">
-                                    <option value="" selected>--select--</option>
                                     <option value="active" {{old('status')=='active'? 'selected' : ''}}>Active</option>
                                     <option value="inactive" {{old('status')=='inactive'? 'selected' : ''}}>Inactive
                                     </option>
@@ -70,25 +101,10 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="condition">Banner condition</label>
-                                <br>
-                                <select id="condition" class="condition" name="condition">
-                                    <option value="" selected>--select--</option>
-                                    <option value="banner" {{old('condition')=='banner'? 'selected' : ''}}>Banner
-                                    </option>
-                                    <option value="promote" {{old('condition')=='promote'? 'selected' : ''}}>Promote
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <label >Upload banner image<span class="text-danger">*</span></label>
+                            <label >Upload user image<span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
@@ -102,7 +118,7 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{{route('banner.index')}}" class="btn btn-danger">Cancel</a>
+                    <a href="{{route('user.index')}}" class="btn btn-danger">Cancel</a>
                 </form>
             </div>
         </div>
@@ -119,7 +135,7 @@
 </Script>
 <script>
     $(document).ready(function () {
-        $('#description').summernote({
+        $('#summary').summernote({
             toolbar: [
                         ['style', ['style']],
                         ['font', ['bold', 'underline', 'clear']],
@@ -133,12 +149,10 @@
             disableDragAndDrop: true,
             height: 150,
             placeholder: 'Write some text...',
-
         });
-        var textareaEmpty = $('#description').summernote('code');
-        textareaEmpty=textareaEmpty.replace('<p><br></p>', '');
     });
 
 </script>
+
 
 @endpush
