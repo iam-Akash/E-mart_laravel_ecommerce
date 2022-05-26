@@ -133,7 +133,10 @@
             disableDragAndDrop: true,
             height: 150,
             placeholder: 'Write some text...',
+
         });
+        var textareaEmpty = $('#description').summernote('code');
+        textareaEmpty=textareaEmpty.replace('<p><br></p>', '');
     });
 
 </script>
