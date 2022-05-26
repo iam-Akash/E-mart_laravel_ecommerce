@@ -23,7 +23,7 @@
             <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
                         class="fa fa-arrow-left"></i></a>Add banner</h2>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{route('admin')}}"><i class="icon-home"></i></a></li>
                 <li class="breadcrumb-item">Banner</li>
                 <li class="breadcrumb-item active">Create banner</li>
             </ul>
@@ -39,7 +39,7 @@
                     <li class="text-danger">{{$error}}</li>
                 @endforeach
             </ul>
-            
+
         @endif
     </div>
     <div class="col-md-12">
@@ -102,6 +102,7 @@
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{route('banner.index')}}" class="btn btn-danger">Cancel</a>
                 </form>
             </div>
         </div>

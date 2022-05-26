@@ -10,7 +10,7 @@
             <h2><a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth"><i
                         class="fa fa-arrow-left"></i></a>All banner</h2>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{route('admin')}}"><i class="icon-home"></i></a></li>
                 <li class="breadcrumb-item">Banner</li>
                 <li class="breadcrumb-item active">All banner</li>
             </ul>
@@ -49,30 +49,27 @@
                         </thead>
                        
                         <tbody>
-                          @foreach ($banners as $key=>$banner)
-                              <tr id="row{{$banner->id}}">
+                          @foreach ($banners as $key=>$item)
+                              <tr id="row{{$item->id}}">
                                   <td>{{$key+1}}</td>
-                                  <td>{{$banner->title}}</td>
-                                  {{-- <td>{{$banner->slug}}</td> --}}
-                                  <td>{!!Str::limit($banner->description, 20, $end='...')!!}</td>
-                                  <td><img src="{{$banner->photo}}" width="120px" height="auto" alt=""></td>
+                                  <td>{{$item->title}}</td>
+                                  <td>{!!Str::limit($item->description, 20, $end='...')!!}</td>
+                                  <td><img src="{{$item->photo}}" width="120px" height="auto" alt=""></td>
                                   <td>
-                                      
-                                    <input type="checkbox" name="toogle" value="{{$banner->id}}" {{$banner->status=='active'? 'checked' : ''}} data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
-                                      
+                                    <input type="checkbox" name="toogle" value="{{$item->id}}" {{$item->status=='active'? 'checked' : ''}} data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
                                   </td>
                                   <td>
-                                      @if ($banner->condition=='banner')
-                                        <span class="badge badge-success">{{$banner->condition}}</span>
+                                      @if ($item->condition=='banner')
+                                        <span class="badge badge-success">{{$item->condition}}</span>
                                           @else
-                                          <span class="badge badge-primary">{{$banner->condition}}</span>
+                                          <span class="badge badge-primary">{{$item->condition}}</span>
                                       @endif
                                       
                                     </td>
-                                  <td>{{$banner->created_at->toFormattedDateString()}}</td>
+                                  <td>{{$item->created_at->toFormattedDateString()}}</td>
                                   <td>
-                                      <a  href="{{route('banner.edit', $banner->id)}}" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-outline-warning" data-placement="bottom"><i class="fa fa-edit"></i></a>
-                                      <a  href="javascript:void(0);" data-id="{{$banner->id}}"  data-toggle="tooltip" title="Delete" class="delete_btn btn btn-sm btn-outline-danger" data-placement="bottom"><i class="fa fa-trash"></i></a>
+                                      <a  href="{{route('banner.edit', $item->id)}}" data-toggle="tooltip" title="Edit" class="btn btn-sm btn-outline-warning" data-placement="bottom"><i class="fa fa-edit"></i></a>
+                                      <a  href="javascript:void(0);" data-id="{{$item->id}}"  data-toggle="tooltip" title="Delete" class="delete_btn btn btn-sm btn-outline-danger" data-placement="bottom"><i class="fa fa-trash"></i></a>
                                     
                                   </td>
 
@@ -109,7 +106,6 @@
                     response.msg,
                     'success'
                     )
-                //    setTimeout(function() { alert(response.msg); }, 1000);
                }
                else{
                    alert('Please try again');
