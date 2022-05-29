@@ -160,8 +160,8 @@
                                         </div>
 
                                         <p class="brand_name">{{Str::upper($item->brand->title)}}</p>
-                                        <a href="#">{{Str::ucfirst($item->title) }}</a>
-                                        @if ($item->discount>0 && $item->condition=='sale')
+                                        <a href="{{route('product.details', $item->slug)}}">{{Str::ucfirst($item->title) }}</a>
+                                        @if ($item->discount>0)
                                         <h6 class="product-price">{{$item->offer_price}} Taka <span >{{$item->price}} Taka</span></h6>
 
                                             @else

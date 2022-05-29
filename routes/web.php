@@ -25,6 +25,7 @@ use App\Http\Controllers\frontend\IndexController;
 
 Route::get('/', [IndexController::class, 'home'])->name('homepage');
 Route::get('product-category/{slug}' , [IndexController::class, 'productCategory'])->name('product.category');
+Route::get('product-details/{slug}' , [IndexController::class, 'productDetails'])->name('product.details');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -21,4 +21,7 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
+    public function related_products(){
+        return $this->hasMany('\App\Models\Product', 'parent_category_id', 'parent_category_id')->where('status', 'active')->take(8);
+    }
 }

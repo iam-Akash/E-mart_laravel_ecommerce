@@ -21,4 +21,9 @@ class IndexController extends Controller
      return view('frontend.pages.product-category', ['category'=>$category]);
    }
 
+   public function productDetails($slug){
+    $product=Product::with('related_products')->where('slug', $slug)->first();
+    return view('frontend.pages.product-details', ['product'=>$product]);
+   }
+
 }
