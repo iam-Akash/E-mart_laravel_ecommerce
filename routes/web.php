@@ -7,6 +7,8 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\frontend\customerController;
+use App\Http\Controllers\seller\sellerController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\frontend\IndexController;
 
@@ -23,15 +25,34 @@ use App\Http\Controllers\frontend\IndexController;
 |
 */
 
-Route::get('/', [IndexController::class, 'home'])->name('homepage');
-Route::get('product-category/{slug}' , [IndexController::class, 'productCategory'])->name('product.category');
-Route::get('product-details/{slug}' , [IndexController::class, 'productDetails'])->name('product.details');
 Auth::routes();
+    
+//Frontend  section
+Route::get('/', [IndexController::class, 'home'])->name('homepage');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//product category
+Route::get('product-category/{slug}' , [IndexController::class, 'productCategory'])->name('product.category');
+//product details
+Route::get('product-details/{slug}' , [IndexController::class, 'productDetails'])->name('product.details');
 
-Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin');
+
+//login and registration of user
+
+    Route::get('Login-Registration', [IndexController::class, 'loginRegistration'])->name('user.login-registration');
+    Route::post('user/login', [IndexController::class, 'userAuthentication'])->name('user.authentication');
+    Route::post('user/registration', [IndexController::class, 'userRegistration'])->name('user.registration');
+    Route::get('user/logout',  [IndexController::class, 'userLogout'])->name('user.logout');
+
+    //user redirect
+    Route::get('user', [IndexController::class, 'userIndex'])->name('customer');
+
+
+
+
+
+//admin section+++++++
+Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'admin']], function(){
+    Route::get('', [AdminController::class, 'index'])->name('admin');
 
     //Banner
     Route::resource('banner', BannerController::class);
@@ -60,4 +81,23 @@ Route::group(['prefix'=>'admin', 'middleware'=>'auth'], function(){
     Route::post('user_status', [UserController::class, 'userStatus'])->name('user.status');
     Route::post('user_delete', [UserController::class, 'userDelete'])->name('user.delete');
     Route::post('user_updatedStatus', [UserController::class, 'updatedStatus'])->name('user.updatedStatus');
+});
+
+//seller section+++++++
+Route::group(['prefix'=>'seller', 'middleware'=>['auth', 'seller']], function(){
+    Route::get('', [sellerController::class, 'index'])->name('seller');
+
+});
+
+//user account
+Route::group(['prefix'=>'user', 'middleware'=>'auth'], function(){
+    Route::get('dashboard', [customerController::class, 'userDashboard'])->name('user.dashboard');
+    Route::get('address', [customerController::class, 'userAddress'])->name('user.address');
+    Route::get('account-details', [customerController::class, 'userDetails'])->name('user.accountDetails');
+    Route::get('order', [customerController::class, 'userOrder'])->name('user.order');
+
+    Route::post('address/add/{id}', [customerController::class, 'userAddressAdd'])->name('user.address.add');
+    Route::post('shipping-address/add/{id}', [customerController::class, 'userShippingAddressAdd'])->name('user.shippingAddress.add');
+    Route::post('account-details/update/{id}', [customerController::class, 'userAccountUpdate'])->name('user.account.update');
+
 });

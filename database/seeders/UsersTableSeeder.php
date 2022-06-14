@@ -23,16 +23,18 @@ class UsersTableSeeder extends Seeder
             'username'=>'Admin',
             'email'=>'admin@gmail.com',
             'password'=> Hash::make('123456'),
+            'phone'=>'01633766966',
             'role'=>'admin',
             'status'=>'active',
             ],
-            //vendor
+            //seller
             [
                 'full_name'=>'Sadia Uddin',
-                'username'=>'Vendor',
-                'email'=>'vendor@gmail.com',
+                'username'=>'Seller',
+                'email'=>'seller@gmail.com',
                 'password'=> Hash::make('123456'),
-                'role'=>'vendor',
+                'phone'=>'01633766966',
+                'role'=>'seller',
                 'status'=>'active',
                 ],
                 //Customer
@@ -41,6 +43,7 @@ class UsersTableSeeder extends Seeder
                 'username'=>'Customer',
                 'email'=>'customer@gmail.com',
                 'password'=> Hash::make('123456'),
+                'phone'=>'01633766966',
                 'role'=>'customer',
                 'status'=>'active',
                 ],

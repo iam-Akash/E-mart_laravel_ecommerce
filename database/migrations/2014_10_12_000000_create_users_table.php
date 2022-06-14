@@ -22,8 +22,20 @@ return new class extends Migration
             $table->string('password');
             $table->string('photo')->nullable();
             $table->string('phone')->nullable();
+            
             $table->text('address')->nullable();
-            $table->enum('role', ['admin', 'vendor', 'customer'])->default('customer');
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postcode')->nullable();
+
+            $table->text('ship_address')->nullable();
+            $table->string('ship_country')->nullable();
+            $table->string('ship_city')->nullable();
+            $table->string('ship_state')->nullable();
+            $table->string('ship_postcode')->nullable();
+
+            $table->enum('role', ['admin', 'seller', 'customer'])->default('customer');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->rememberToken();
             $table->timestamps();

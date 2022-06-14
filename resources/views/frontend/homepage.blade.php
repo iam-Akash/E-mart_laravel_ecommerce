@@ -6,7 +6,6 @@
 
 @endpush
 @section('content')
-
     <!-- Welcome Slides Area -->
     @if (count($banners)>0)
     <section class="welcome_area">
